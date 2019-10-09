@@ -27,7 +27,6 @@ def make_editor_icons_action(target, source, env):
                 icons_string.write("\\" + str(hex(ord(b)))[1:])
                 b = svgf.read(1)
 
-
         icons_string.write('"')
         if fname != svg_icons[-1]:
             icons_string.write(",")
@@ -44,8 +43,8 @@ def make_editor_icons_action(target, source, env):
     s.write("static const char *editor_icons_names[] = {\n")
 
     # this is used to store the indices of thumbnail icons
-    thumb_medium_indices = [];
-    thumb_big_indices = [];
+    thumb_medium_indices = []
+    thumb_big_indices = []
     index = 0
     for f in svg_icons:
 

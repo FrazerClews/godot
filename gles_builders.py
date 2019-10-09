@@ -57,11 +57,11 @@ def include_file_in_legacygl_header(filename, header_data, depth):
             import os.path
 
             included_file = os.path.relpath(os.path.dirname(filename) + "/" + includeline)
-            if not included_file in header_data.vertex_included_files and header_data.reading == "vertex":
+            if included_file not in header_data.vertex_included_files and header_data.reading == "vertex":
                 header_data.vertex_included_files += [included_file]
                 if include_file_in_legacygl_header(included_file, header_data, depth + 1) is None:
                     print("Error in file '" + filename + "': #include " + includeline + "could not be found!")
-            elif not included_file in header_data.fragment_included_files and header_data.reading == "fragment":
+            elif included_file not in header_data.fragment_included_files and header_data.reading == "fragment":
                 header_data.fragment_included_files += [included_file]
                 if include_file_in_legacygl_header(included_file, header_data, depth + 1) is None:
                     print("Error in file '" + filename + "': #include " + includeline + "could not be found!")
@@ -81,7 +81,7 @@ def include_file_in_legacygl_header(filename, header_data, depth):
                 if ifdefline not in header_data.enums[enumbase]:
                     header_data.enums[enumbase].append(ifdefline)
 
-            elif not ifdefline in header_data.conditionals:
+            elif ifdefline not in header_data.conditionals:
                 header_data.conditionals += [ifdefline]
 
         if line.find("uniform") != -1 and line.lower().find("texunit:") != -1:
@@ -104,7 +104,7 @@ def include_file_in_legacygl_header(filename, header_data, depth):
                     # unfiorm array
                     x = x[:x.find("[")]
 
-                if not x in header_data.texunit_names:
+                if x not in header_data.texunit_names:
                     header_data.texunits += [(x, texunit)]
                     header_data.texunit_names += [x]
 
@@ -126,7 +126,7 @@ def include_file_in_legacygl_header(filename, header_data, depth):
                     # unfiorm array
                     x = x[:x.find("[")]
 
-                if not x in header_data.ubo_names:
+                if x not in header_data.ubo_names:
                     header_data.ubos += [(x, ubo)]
                     header_data.ubo_names += [x]
 
@@ -142,7 +142,7 @@ def include_file_in_legacygl_header(filename, header_data, depth):
                     # unfiorm array
                     x = x[:x.find("[")]
 
-                if not x in header_data.uniforms:
+                if x not in header_data.uniforms:
                     header_data.uniforms += [x]
 
         if line.strip().find("attribute ") == 0 and line.find("attrib:") != -1:
@@ -252,78 +252,78 @@ def build_legacygl_header(filename, include, class_suffix, output_attribs, gles2
 
     fd.write("""\t_FORCE_INLINE_ void set_uniform(Uniforms p_uniform, const Transform& p_transform) {  _FU
 
-		const Transform &tr = p_transform;
+        const Transform &tr = p_transform;
 
-		GLfloat matrix[16]={ /* build a 16x16 matrix */
-			tr.basis.elements[0][0],
-			tr.basis.elements[1][0],
-			tr.basis.elements[2][0],
-			0,
-			tr.basis.elements[0][1],
-			tr.basis.elements[1][1],
-			tr.basis.elements[2][1],
-			0,
-			tr.basis.elements[0][2],
-			tr.basis.elements[1][2],
-			tr.basis.elements[2][2],
-			0,
-			tr.origin.x,
-			tr.origin.y,
-			tr.origin.z,
-			1
-		};
+        GLfloat matrix[16]={ /* build a 16x16 matrix */
+            tr.basis.elements[0][0],
+            tr.basis.elements[1][0],
+            tr.basis.elements[2][0],
+            0,
+            tr.basis.elements[0][1],
+            tr.basis.elements[1][1],
+            tr.basis.elements[2][1],
+            0,
+            tr.basis.elements[0][2],
+            tr.basis.elements[1][2],
+            tr.basis.elements[2][2],
+            0,
+            tr.origin.x,
+            tr.origin.y,
+            tr.origin.z,
+            1
+        };
 
 
                 glUniformMatrix4fv(get_uniform(p_uniform),1,false,matrix);
 
 
-	}
+    }
 
-	""")
+    """)
 
     fd.write("""_FORCE_INLINE_ void set_uniform(Uniforms p_uniform, const Transform2D& p_transform) {  _FU
 
-		const Transform2D &tr = p_transform;
+        const Transform2D &tr = p_transform;
 
-		GLfloat matrix[16]={ /* build a 16x16 matrix */
-			tr.elements[0][0],
-			tr.elements[0][1],
-			0,
-			0,
-			tr.elements[1][0],
-			tr.elements[1][1],
-			0,
-			0,
-			0,
-			0,
-			1,
-			0,
-			tr.elements[2][0],
-			tr.elements[2][1],
-			0,
-			1
-		};
+        GLfloat matrix[16]={ /* build a 16x16 matrix */
+            tr.elements[0][0],
+            tr.elements[0][1],
+            0,
+            0,
+            tr.elements[1][0],
+            tr.elements[1][1],
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            tr.elements[2][0],
+            tr.elements[2][1],
+            0,
+            1
+        };
 
 
         glUniformMatrix4fv(get_uniform(p_uniform),1,false,matrix);
 
 
-	}
+    }
 
-	""")
+    """)
 
     fd.write("""_FORCE_INLINE_ void set_uniform(Uniforms p_uniform, const CameraMatrix& p_matrix) {  _FU
 
-		GLfloat matrix[16];
+        GLfloat matrix[16];
 
-		for (int i=0;i<4;i++) {
-			for (int j=0;j<4;j++) {
+        for (int i=0;i<4;i++) {
+            for (int j=0;j<4;j++) {
 
-				matrix[i*4+j]=p_matrix.matrix[i][j];
-			}
-		}
+                matrix[i*4+j]=p_matrix.matrix[i][j];
+            }
+        }
 
-		glUniformMatrix4fv(get_uniform(p_uniform),1,false,matrix);
+        glUniformMatrix4fv(get_uniform(p_uniform),1,false,matrix);
 }""")
 
     fd.write("\n\n#undef _FU\n\n\n")

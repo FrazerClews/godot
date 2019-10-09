@@ -104,21 +104,24 @@ def color(color, string):
     else:
         return string
 
+
 ansi_escape = re.compile(r'\x1b[^m]*m')
 
 
 def nonescape_len(s):
     return len(ansi_escape.sub('', s))
 
+
 def terminal_supports_color():
     p = sys.platform
-    supported_platform = p != 'Pocket PC' and (p != 'win32' or
-                                           'ANSICON' in os.environ)
+    supported_platform = p != 'Pocket PC' and (p != 'win32'
+                                               or 'ANSICON' in os.environ)
 
     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
     if not supported_platform or not is_a_tty:
         return False
     return True
+
 
 ################################################################################
 #                                   Classes                                    #
@@ -259,7 +262,7 @@ class ClassStatus:
                     status.progresses[tag.tag].increment(len(descr.text.strip()) > 0)
             elif tag.tag in ['constants', 'members']:
                 for sub_tag in list(tag):
-                    if not sub_tag.text is None:
+                    if sub_tag.text is not None:
                         status.progresses[tag.tag].increment(len(sub_tag.text.strip()) > 0)
 
             elif tag.tag in ['tutorials']:
@@ -292,7 +295,7 @@ for arg in sys.argv[1:]:
         elif os.path.isdir(arg):
             for f in os.listdir(arg):
                 if f.endswith('.xml'):
-                    input_file_list.append(os.path.join(arg, f));
+                    input_file_list.append(os.path.join(arg, f))
         else:
             input_class_list.append(arg)
     except KeyError:

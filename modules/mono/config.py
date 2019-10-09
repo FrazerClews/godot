@@ -1,6 +1,6 @@
 def can_build(env, platform):
     if platform in ['javascript']:
-        return False # Not yet supported
+        return False  # Not yet supported
     return True
 
 

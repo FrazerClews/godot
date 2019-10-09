@@ -54,7 +54,7 @@ def make_fonts_header(target, source, env):
     g.write("#define _EDITOR_FONTS_H\n")
 
     # saving uncompressed, since freetype will reference from memory pointer
-    xl_names = []
+    # TODO check if xl_names was meant to be appended like in make_translations_header() ?
     for i in range(len(source)):
         with open(source[i], "rb")as f:
             buf = f.read()
@@ -119,6 +119,7 @@ def make_translations_header(target, source, env):
     g.write("#endif")
 
     g.close()
+
 
 if __name__ == '__main__':
     subprocess_main(globals())

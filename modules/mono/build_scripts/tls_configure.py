@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+
 def supported(result):
     return 'supported' if result else 'not supported'
 

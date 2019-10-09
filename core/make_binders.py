@@ -280,7 +280,6 @@ MethodBind* create_method_bind($ifret R$ $ifnoret void$ (*p_method)($ifconst con
 """
 
 
-
 def make_version(template, nargs, argmax, const, ret):
 
     intext = template

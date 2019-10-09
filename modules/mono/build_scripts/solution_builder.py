@@ -132,7 +132,7 @@ def find_msbuild_windows(env):
 
 def run_command(command, args, env_override=None, name=None):
     def cmd_args_to_str(cmd_args):
-        return ' '.join([arg if not ' ' in arg else '"%s"' % arg for arg in cmd_args])
+        return ' '.join([arg if ' ' not in arg else '"%s"' % arg for arg in cmd_args])
 
     args = [command] + args
 

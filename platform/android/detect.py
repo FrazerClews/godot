@@ -54,7 +54,7 @@ def configure(env):
 
         import subprocess
 
-        def mySubProcess(cmdline, env):
+        def my_subprocess(cmdline, env):
             # print("SPAWNED : " + cmdline)
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -68,7 +68,7 @@ def configure(env):
                 print("=====")
             return rv
 
-        def mySpawn(sh, escape, cmd, args, env):
+        def my_spawn(sh, escape, cmd, args, env):
 
             newargs = ' '.join(args[1:])
             cmdline = cmd + " " + newargs
@@ -77,15 +77,15 @@ def configure(env):
             if len(cmdline) > 32000 and cmd.endswith("ar"):
                 cmdline = cmd + " " + args[1] + " " + args[2] + " "
                 for i in range(3, len(args)):
-                    rv = mySubProcess(cmdline + args[i], env)
+                    rv = my_subprocess(cmdline + args[i], env)
                     if rv:
                         break
             else:
-                rv = mySubProcess(cmdline, env)
+                rv = my_subprocess(cmdline, env)
 
             return rv
 
-        env['SPAWN'] = mySpawn
+        env['SPAWN'] = my_spawn
 
     # Architecture
 
@@ -259,7 +259,7 @@ def configure(env):
     # Link flags
 
     ndk_version = get_ndk_version(env["ANDROID_NDK_ROOT"])
-    if ndk_version != None and LooseVersion(ndk_version) >= LooseVersion("17.1.4828580"):
+    if ndk_version is not None and LooseVersion(ndk_version) >= LooseVersion("17.1.4828580"):
         env.Append(LINKFLAGS=['-Wl,--exclude-libs,libgcc.a', '-Wl,--exclude-libs,libatomic.a', '-nostdlib++'])
     else:
         env.Append(LINKFLAGS=[env["ANDROID_NDK_ROOT"] + "/sources/cxx-stl/llvm-libc++/libs/" + arch_subpath + "/libandroid_support.a"])
@@ -275,10 +275,10 @@ def configure(env):
     env.Append(LINKFLAGS=target_opts)
     env.Append(LINKFLAGS=common_opts)
 
-    env.Append(LIBPATH=[env["ANDROID_NDK_ROOT"] + '/toolchains/' + target_subpath + '/prebuilt/' +
-                        host_subpath + '/lib/gcc/' + abi_subpath + '/4.9.x'])
-    env.Append(LIBPATH=[env["ANDROID_NDK_ROOT"] +
-                        '/toolchains/' + target_subpath + '/prebuilt/' + host_subpath + '/' + abi_subpath + '/lib'])
+    env.Append(LIBPATH=[env["ANDROID_NDK_ROOT"] + '/toolchains/' + target_subpath + '/prebuilt/'
+                        + host_subpath + '/lib/gcc/' + abi_subpath + '/4.9.x'])
+    env.Append(LIBPATH=[env["ANDROID_NDK_ROOT"]
+                        + '/toolchains/' + target_subpath + '/prebuilt/' + host_subpath + '/' + abi_subpath + '/lib'])
 
     env.Prepend(CPPPATH=['#platform/android'])
     env.Append(CPPDEFINES=['ANDROID_ENABLED', 'UNIX_ENABLED', 'NO_FCNTL'])

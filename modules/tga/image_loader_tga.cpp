@@ -249,7 +249,7 @@ Error ImageLoaderTGA::load_image(Ref<Image> p_image, FileAccess *f, bool p_force
 		}
 	}
 
-	if (tga_header.image_width <= 0 || tga_header.image_height <= 0)
+	if (tga_header.image_width == 0 || tga_header.image_height == 0)
 		err = FAILED;
 
 	if (!(tga_header.pixel_depth == 8 || tga_header.pixel_depth == 24 || tga_header.pixel_depth == 32)) {

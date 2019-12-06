@@ -151,7 +151,7 @@ def make_license_header(target, source, env):
             return line
 
         def next_tag(self):
-            if not ':' in self.current:
+            if ':' not in self.current:
                 return ('', [])
             tag, line = self.current.split(":", 1)
             lines = [line.strip()]
@@ -176,7 +176,7 @@ def make_license_header(target, source, env):
 
             if not tag or not reader.current:
                 # end of a paragraph start a new part
-                if "License" in part and not "Files" in part:
+                if "License" in part and "Files" not in part:
                     # no Files tag in this one, so assume standalone license
                     license_list.append(part["License"])
                 part = {}

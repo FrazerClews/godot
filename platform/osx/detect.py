@@ -38,13 +38,13 @@ def get_flags():
 
 def configure(env):
 
-	## Build type
+    ## Build type
 
     if (env["target"] == "release"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O3', '-fomit-frame-pointer', '-ftree-vectorize', '-msse2'])
-        else: #optimize for size
-            env.Prepend(CCFLAGS=['-Os','-ftree-vectorize', '-msse2'])
+        else:  # optimize for size
+            env.Prepend(CCFLAGS=['-Os', '-ftree-vectorize', '-msse2'])
 
         if (env["debug_symbols"] == "yes"):
             env.Prepend(CCFLAGS=['-g1'])
@@ -52,9 +52,9 @@ def configure(env):
             env.Prepend(CCFLAGS=['-g2'])
 
     elif (env["target"] == "release_debug"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O2'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Prepend(CCFLAGS=['-Os'])
         env.Prepend(CPPDEFINES=['DEBUG_ENABLED'])
         if (env["debug_symbols"] == "yes"):
@@ -78,7 +78,7 @@ def configure(env):
     if "OSXCROSS_ROOT" in os.environ:
         env["osxcross"] = True
 
-    if not "osxcross" in env: # regular native build
+    if "osxcross" not in env:  # regular native build
         env.Append(CCFLAGS=['-arch', 'x86_64'])
         env.Append(LINKFLAGS=['-arch', 'x86_64'])
         if (env["macports_clang"] != 'no'):
@@ -90,7 +90,7 @@ def configure(env):
             env['AR'] = mpprefix + "/libexec/llvm-" + mpclangver + "/bin/llvm-ar"
             env['RANLIB'] = mpprefix + "/libexec/llvm-" + mpclangver + "/bin/llvm-ranlib"
             env['AS'] = mpprefix + "/libexec/llvm-" + mpclangver + "/bin/llvm-as"
-            env.Append(CPPDEFINES=['__MACPORTS__']) #hack to fix libvpx MM256_BROADCASTSI128_SI256 define
+            env.Append(CPPDEFINES=['__MACPORTS__'])  # hack to fix libvpx MM256_BROADCASTSI128_SI256 define
         else:
             env['CC'] = 'clang'
             env['CXX'] = 'clang++'
@@ -99,7 +99,7 @@ def configure(env):
         env.Append(CCFLAGS=['-isysroot', '$MACOS_SDK_PATH'])
         env.Append(LINKFLAGS=['-isysroot', '$MACOS_SDK_PATH'])
 
-    else: # osxcross build
+    else:  # osxcross build
         root = os.environ.get("OSXCROSS_ROOT", 0)
         basecmd = root + "/target/bin/x86_64-apple-" + env["osxcross_sdk"] + "-"
 
@@ -115,7 +115,7 @@ def configure(env):
         env['AR'] = basecmd + "ar"
         env['RANLIB'] = basecmd + "ranlib"
         env['AS'] = basecmd + "as"
-        env.Append(CPPDEFINES=['__MACPORTS__']) #hack to fix libvpx MM256_BROADCASTSI128_SI256 define
+        env.Append(CPPDEFINES=['__MACPORTS__'])  # hack to fix libvpx MM256_BROADCASTSI128_SI256 define
 
     if (env["CXX"] == "clang++"):
         env.Append(CPPDEFINES=['TYPED_METHOD_BIND'])

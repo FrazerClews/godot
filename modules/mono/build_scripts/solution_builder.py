@@ -132,7 +132,7 @@ def find_msbuild_windows(env):
 
 def run_command(command, args, env_override=None, name=None):
     def cmd_args_to_str(cmd_args):
-        return ' '.join([arg if not ' ' in arg else '"%s"' % arg for arg in cmd_args])
+        return ' '.join([arg if ' ' not in arg else '"%s"' % arg for arg in cmd_args])
 
     args = [command] + args
 
@@ -167,7 +167,9 @@ def nuget_restore(env, *args):
     run_command(nuget_path, ['restore'] + list(args), name='nuget restore')
 
 
-def build_solution(env, solution_path, build_config, extra_msbuild_args=[]):
+def build_solution(env, solution_path, build_config, extra_msbuild_args=None):
+    if extra_msbuild_args is None:
+        extra_msbuild_args = []
     global verbose
     verbose = env['verbose']
 

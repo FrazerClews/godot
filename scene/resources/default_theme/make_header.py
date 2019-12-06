@@ -41,7 +41,7 @@ for x in pixmaps:
     pngf.close()
 
 # Generate shaders block
-f.write(b"\n// shaders block\n");
+f.write(b"\n// shaders block\n")
 
 shaders = glob.glob("*.gsl")
 shaders.sort()

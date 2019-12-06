@@ -53,6 +53,7 @@ def can_build():
 
     return True
 
+
 def get_opts():
     from SCons.Variables import BoolVariable, EnumVariable
 
@@ -84,9 +85,9 @@ def configure(env):
     ## Build type
 
     if (env["target"] == "release"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O3'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Prepend(CCFLAGS=['-Os'])
 
         if (env["debug_symbols"] == "yes"):
@@ -95,9 +96,9 @@ def configure(env):
             env.Prepend(CCFLAGS=['-g2'])
 
     elif (env["target"] == "release_debug"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O2'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Prepend(CCFLAGS=['-Os'])
         env.Prepend(CPPDEFINES=['DEBUG_ENABLED'])
 
@@ -171,7 +172,7 @@ def configure(env):
             else:
                 env.Append(CCFLAGS=['-flto'])
                 env.Append(LINKFLAGS=['-flto'])
-        
+
         if not env['use_llvm']:
             env['RANLIB'] = 'gcc-ranlib'
             env['AR'] = 'gcc-ar'
@@ -182,13 +183,13 @@ def configure(env):
     # Check for gcc version >= 6 before adding -no-pie
     if using_gcc(env):
         version = get_compiler_version(env)
-        if version != None and version[0] >= '6':
+        if version is not None and version[0] >= '6':
             env.Append(CCFLAGS=['-fpie'])
             env.Append(LINKFLAGS=['-no-pie'])
     # Do the same for clang should be fine with Clang 4 and higher
     if using_clang(env):
         version = get_compiler_version(env)
-        if version != None and version[0] >= '4':
+        if version is not None and version[0] >= '4':
             env.Append(CCFLAGS=['-fpie'])
             env.Append(LINKFLAGS=['-no-pie'])
 
@@ -286,16 +287,16 @@ def configure(env):
 
     ## Flags
 
-    if (os.system("pkg-config --exists alsa") == 0): # 0 means found
+    if (os.system("pkg-config --exists alsa") == 0):  # 0 means found
         print("Enabling ALSA")
         env.Append(CPPDEFINES=["ALSA_ENABLED", "ALSAMIDI_ENABLED"])
-	# Don't parse --cflags, we don't need to add /usr/include/alsa to include path
+    # Don't parse --cflags, we don't need to add /usr/include/alsa to include path
         env.ParseConfig('pkg-config alsa --libs')
     else:
         print("ALSA libraries not found, disabling driver")
 
     if env['pulseaudio']:
-        if (os.system("pkg-config --exists libpulse") == 0): # 0 means found
+        if (os.system("pkg-config --exists libpulse") == 0):  # 0 means found
             print("Enabling PulseAudio")
             env.Append(CPPDEFINES=["PULSEAUDIO_ENABLED"])
             env.ParseConfig('pkg-config --cflags --libs libpulse')
@@ -306,7 +307,7 @@ def configure(env):
         env.Append(CPPDEFINES=["JOYDEV_ENABLED"])
 
         if env['udev']:
-            if (os.system("pkg-config --exists libudev") == 0): # 0 means found
+            if (os.system("pkg-config --exists libudev") == 0):  # 0 means found
                 print("Enabling udev support")
                 env.Append(CPPDEFINES=["UDEV_ENABLED"])
                 env.ParseConfig('pkg-config libudev --cflags --libs')
@@ -329,7 +330,7 @@ def configure(env):
 
     if env["execinfo"]:
         env.Append(LIBS=['execinfo'])
-        
+
     if not env['tools']:
         env.Append(LINKFLAGS=['-T', 'platform/x11/pck_embed.ld'])
 

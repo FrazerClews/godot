@@ -16,6 +16,7 @@ READ_CONSTANTS = 2
 
 read_what = READ_TYPES
 
+
 def read_file(f):
     while(True):
 
@@ -83,6 +84,7 @@ def read_file(f):
 
             functions.append(funcdata)
             print(funcdata)
+
 
 for path in sys.argv[1:]:
     with open(path, "r") as f:

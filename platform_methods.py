@@ -54,7 +54,7 @@ def run_in_subprocess(builder_function):
 
         print('Executing builder function in subprocess: '
               'module_path=%r, parameter_file=%r, parameter_file_size=%r, target=%r, source=%r' % (
-               module_path, json_path, json_file_size, target, source))
+                  module_path, json_path, json_file_size, target, source))
         try:
             exit_code = subprocess.call([sys.executable, module_path, json_path], env=subprocess_env)
         finally:

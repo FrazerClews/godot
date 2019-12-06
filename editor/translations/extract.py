@@ -22,7 +22,8 @@ if (not os.path.exists("editor")):
 
 
 matches = []
-for root, dirnames, filenames in os.walk('.'):
+# TODO better than _ ?
+for root, _, filenames in os.walk('.'):
     for filename in fnmatch.filter(filenames, '*.cpp'):
         if (filename.find("collada") != -1):
             continue
@@ -51,6 +52,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8-bit\\n"
 """
+
 
 def process_file(f, fname):
 
@@ -81,13 +83,13 @@ def process_file(f, fname):
             if (line_nb):
                 location += ":" + str(lc)
 
-            if (not msg in unique_str):
+            if (msg not in unique_str):
                 main_po += "\n#: " + location + "\n"
                 main_po += 'msgid "' + msg + '"\n'
                 main_po += 'msgstr ""\n'
                 unique_str.append(msg)
                 unique_loc[msg] = [location]
-            elif (not location in unique_loc[msg]):
+            elif (location not in unique_loc[msg]):
                 # Add additional location to previous occurrence too
                 msg_pos = main_po.find('\nmsgid "' + msg + '"')
                 if (msg_pos == -1):
@@ -97,6 +99,7 @@ def process_file(f, fname):
 
         l = f.readline()
         lc += 1
+
 
 print("Updating the editor.pot template...")
 

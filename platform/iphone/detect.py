@@ -2,6 +2,7 @@ import os
 import sys
 from methods import detect_darwin_sdk_path
 
+
 def is_active():
     return True
 
@@ -44,10 +45,10 @@ def configure(env):
 
     if (env["target"].startswith("release")):
         env.Append(CPPDEFINES=['NDEBUG', ('NS_BLOCK_ASSERTIONS', 1)])
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Append(CCFLAGS=['-O2', '-ftree-vectorize', '-fomit-frame-pointer'])
             env.Append(LINKFLAGS=['-O2'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Append(CCFLAGS=['-Os', '-ftree-vectorize'])
             env.Append(LINKFLAGS=['-Os'])
 

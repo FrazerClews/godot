@@ -84,7 +84,6 @@ def _build_gdnative_api_struct_header(api):
 
         return ret_val
 
-
     def generate_core_extension_struct(core):
         ret_val = []
         if core['next']:
@@ -104,7 +103,6 @@ def _build_gdnative_api_struct_header(api):
         ret_val += ['} godot_gdnative_core_' + '{0}_{1}'.format(core['version']['major'], core['version']['minor']) + '_api_struct;', '']
 
         return ret_val
-
 
     for ext in api['extensions']:
         name = ext['name']
@@ -173,7 +171,6 @@ def _build_gdnative_api_struct_source(api):
         ret_val += ['};\n']
 
         return ret_val
-
 
     def get_core_struct_definition(core):
         ret_val = []

@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 # Uncomment to do type checks. I have it commented out so it works below Python 3.5
-#from typing import List, Dict, TextIO, Tuple, Iterable, Optional, DefaultDict, Any, Union
+# from typing import List, Dict, TextIO, Tuple, Iterable, Optional, DefaultDict, Any, Union
 
 # http(s)://docs.godotengine.org/<langcode>/<tag>/path/to/page.html(#fragment-tag)
 GODOT_DOCS_PATTERN = re.compile(r'^http(?:s)?://docs\.godotengine\.org/(?:[a-zA-Z0-9.\-_]*)/(?:[a-zA-Z0-9.\-_]*)/(.*)\.html(#.*)?$')
@@ -45,6 +45,7 @@ class PropertyDef:
         self.text = text
         self.default_value = default_value
         self.overridden = overridden
+
 
 class ParameterDef:
     def __init__(self, name, type_name, default_value):  # type: (str, TypeName, Optional[str]) -> None
@@ -251,8 +252,6 @@ class State:
                 if link.text is not None:
                     class_def.tutorials.append(link.text)
 
-
-
     def sort_classes(self):  # type: () -> None
         self.classes = OrderedDict(sorted(self.classes.items(), key=lambda t: t[0]))
 
@@ -341,6 +340,7 @@ def main():  # type: () -> None
 
     if state.errored:
         exit(1)
+
 
 def make_rst_class(class_def, state, dry_run, output_dir):  # type: (ClassDef, State, bool, str) -> None
     class_name = class_def.name
@@ -590,12 +590,12 @@ def make_class_list(class_list, columns):  # type: (List[str], int) -> None
             row_max = len(fit_columns[n])
 
     f.write("| ")
-    for n in range(0, columns):
+    for _ in range(0, columns):
         f.write(" | |")
 
     f.write("\n")
     f.write("+")
-    for n in range(0, columns):
+    for _ in range(0, columns):
         f.write("--+-------+")
     f.write("\n")
 
@@ -617,7 +617,7 @@ def make_class_list(class_list, columns):  # type: (List[str], int) -> None
         s += '\n'
         f.write(s)
 
-    for n in range(0, columns):
+    for _ in range(0, columns):
         f.write("--+-------+")
     f.write("\n")
 
@@ -892,7 +892,8 @@ def rstize_text(text, state):  # type: (str, State) -> str
 
         # Properly escape things like `[Node]s`
         if escape_post and post_text and (post_text[0].isalnum() or post_text[0] == "("):  # not punctuation, escape
-            post_text = '\ ' + post_text
+            # TODO "" or ''
+            post_text = r'\ ' + post_text
 
         next_brac_pos = post_text.find('[', 0)
         iter_pos = 0
@@ -900,7 +901,7 @@ def rstize_text(text, state):  # type: (str, State) -> str
             iter_pos = post_text.find('*', iter_pos, next_brac_pos)
             if iter_pos == -1:
                 break
-            post_text = post_text[:iter_pos] + "\*" + post_text[iter_pos + 1:]
+            post_text = post_text[:iter_pos] + r"\*" + post_text[iter_pos + 1:]
             iter_pos += 2
 
         iter_pos = 0
@@ -909,7 +910,7 @@ def rstize_text(text, state):  # type: (str, State) -> str
             if iter_pos == -1:
                 break
             if not post_text[iter_pos + 1].isalnum():  # don't escape within a snake_case word
-                post_text = post_text[:iter_pos] + "\_" + post_text[iter_pos + 1:]
+                post_text = post_text[:iter_pos] + r"\_" + post_text[iter_pos + 1:]
                 iter_pos += 2
             else:
                 iter_pos += 1
@@ -977,8 +978,8 @@ def make_enum(t, state):  # type: (str, State) -> str
         if c in state.classes and e not in state.classes[c].enums:
             c = "@GlobalScope"
 
-    if not c in state.classes and c.startswith("_"):
-        c = c[1:] # Remove the underscore prefix
+    if c not in state.classes and c.startswith("_"):
+        c = c[1:]  # Remove the underscore prefix
 
     if c in state.classes and e in state.classes[c].enums:
         return ":ref:`{0}<enum_{1}_{0}>`".format(e, c)

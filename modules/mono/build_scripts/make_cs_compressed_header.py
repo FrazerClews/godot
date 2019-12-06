@@ -39,20 +39,20 @@ def generate_header(src, dst, version_dst):
                         header.write(byte_to_str(buf[buf_idx]))
                     header.write(' };\n')
                     inserted_files += '\tr_files.insert("' + filepath_src_rel.replace('\\', '\\\\') + '", ' \
-                                        'GodotCsCompressedFile(_cs_' + name + '_compressed_size, ' \
-                                        '_cs_' + name + '_uncompressed_size, ' \
-                                        '_cs_' + name + '_compressed));\n'
+                                      'GodotCsCompressedFile(_cs_' + name + '_compressed_size, ' \
+                                      '_cs_' + name + '_uncompressed_size, ' \
+                                      '_cs_' + name + '_compressed));\n'
         header.write('\nstruct GodotCsCompressedFile\n' '{\n'
-            '\tint compressed_size;\n' '\tint uncompressed_size;\n' '\tconst unsigned char* data;\n'
-            '\n\tGodotCsCompressedFile(int p_comp_size, int p_uncomp_size, const unsigned char* p_data)\n'
-            '\t{\n' '\t\tcompressed_size = p_comp_size;\n' '\t\tuncompressed_size = p_uncomp_size;\n'
-            '\t\tdata = p_data;\n' '\t}\n' '\n\tGodotCsCompressedFile() {}\n' '};\n'
-            '\nvoid get_compressed_files(Map<String, GodotCsCompressedFile>& r_files)\n' '{\n' + inserted_files + '}\n'
-            )
+                     '\tint compressed_size;\n' '\tint uncompressed_size;\n' '\tconst unsigned char* data;\n'
+                     '\n\tGodotCsCompressedFile(int p_comp_size, int p_uncomp_size, const unsigned char* p_data)\n'
+                     '\t{\n' '\t\tcompressed_size = p_comp_size;\n' '\t\tuncompressed_size = p_uncomp_size;\n'
+                     '\t\tdata = p_data;\n' '\t}\n' '\n\tGodotCsCompressedFile() {}\n' '};\n'
+                     '\nvoid get_compressed_files(Map<String, GodotCsCompressedFile>& r_files)\n' '{\n' + inserted_files + '}\n'
+                     )
         header.write('\n#endif // TOOLS_ENABLED\n')
         header.write('\n#endif // CS_COMPRESSED_H\n')
 
-        glue_version = int(latest_mtime) # The latest modified time will do for now
+        glue_version = int(latest_mtime)  # The latest modified time will do for now
 
         with open(version_dst, 'w') as version_header:
             version_header.write('/* THIS FILE IS GENERATED DO NOT EDIT */\n')

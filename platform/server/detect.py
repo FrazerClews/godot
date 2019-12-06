@@ -5,6 +5,7 @@ import sys
 # This file is mostly based on platform/x11/detect.py.
 # If editing this file, make sure to apply relevant changes here too.
 
+
 def is_active():
     return True
 
@@ -52,9 +53,9 @@ def configure(env):
     ## Build type
 
     if (env["target"] == "release"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O3'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Prepend(CCFLAGS=['-Os'])
 
         if (env["debug_symbols"] == "yes"):
@@ -63,9 +64,9 @@ def configure(env):
             env.Prepend(CCFLAGS=['-g2'])
 
     elif (env["target"] == "release_debug"):
-        if (env["optimize"] == "speed"): #optimize for speed (default)
+        if (env["optimize"] == "speed"):  # optimize for speed (default)
             env.Prepend(CCFLAGS=['-O2'])
-        else: #optimize for size
+        else:  # optimize for size
             env.Prepend(CCFLAGS=['-Os'])
         env.Prepend(CPPDEFINES=['DEBUG_ENABLED'])
 
@@ -98,7 +99,6 @@ def configure(env):
             env["LINK"] = "clang++"
         env.Append(CPPDEFINES=['TYPED_METHOD_BIND'])
         env.extra_suffix = ".llvm" + env.extra_suffix
-
 
     if env['use_ubsan'] or env['use_asan'] or env['use_lsan'] or env['use_tsan']:
         env.extra_suffix += "s"

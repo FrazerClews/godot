@@ -41,23 +41,23 @@ def disable_warnings(self):
         self.Append(CCFLAGS=['/w'])
         self.Append(CFLAGS=['/w'])
         self.Append(CXXFLAGS=['/w'])
-        self['CCFLAGS'] = [x for x in self['CCFLAGS'] if not x in warn_flags]
-        self['CFLAGS'] = [x for x in self['CFLAGS'] if not x in warn_flags]
-        self['CXXFLAGS'] = [x for x in self['CXXFLAGS'] if not x in warn_flags]
+        self['CCFLAGS'] = [x for x in self['CCFLAGS'] if x not in warn_flags]
+        self['CFLAGS'] = [x for x in self['CFLAGS'] if x not in warn_flags]
+        self['CXXFLAGS'] = [x for x in self['CXXFLAGS'] if x not in warn_flags]
     else:
         self.Append(CCFLAGS=['-w'])
         self.Append(CFLAGS=['-w'])
         self.Append(CXXFLAGS=['-w'])
 
 
-def add_module_version_string(self,s):
+def add_module_version_string(self, s):
     self.module_version_string += "." + s
 
 
 def update_version(module_version_string=""):
 
     build_name = "custom_build"
-    if os.getenv("BUILD_NAME") != None:
+    if os.getenv("BUILD_NAME") is not None:
         build_name = os.getenv("BUILD_NAME")
         print("Using custom build name: " + build_name)
 
@@ -191,7 +191,7 @@ def win32_spawn(sh, escape, cmd, args, env):
     cmdline = cmd + " " + newargs
     startupinfo = subprocess.STARTUPINFO()
     for e in env:
-        if type(env[e]) != type(""):
+        if not isinstance(env[e], ""):
             env[e] = str(env[e])
     proc = subprocess.Popen(cmdline, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, startupinfo=startupinfo, shell=False, env=env)
@@ -203,37 +203,40 @@ def win32_spawn(sh, escape, cmd, args, env):
         print("=====")
     return rv
 
+
 """
 def win32_spawn(sh, escape, cmd, args, spawnenv):
-	import win32file
-	import win32event
-	import win32process
-	import win32security
-	for var in spawnenv:
-		spawnenv[var] = spawnenv[var].encode('ascii', 'replace')
+    import win32file
+    import win32event
+    import win32process
+    import win32security
+    for var in spawnenv:
+        spawnenv[var] = spawnenv[var].encode('ascii', 'replace')
 
-	sAttrs = win32security.SECURITY_ATTRIBUTES()
-	StartupInfo = win32process.STARTUPINFO()
-	newargs = ' '.join(map(escape, args[1:]))
-	cmdline = cmd + " " + newargs
+    sAttrs = win32security.SECURITY_ATTRIBUTES()
+    StartupInfo = win32process.STARTUPINFO()
+    newargs = ' '.join(map(escape, args[1:]))
+    cmdline = cmd + " " + newargs
 
-	# check for any special operating system commands
-	if cmd == 'del':
-		for arg in args[1:]:
-			win32file.DeleteFile(arg)
-		exit_code = 0
-	else:
-		# otherwise execute the command.
-		hProcess, hThread, dwPid, dwTid = win32process.CreateProcess(None, cmdline, None, None, 1, 0, spawnenv, None, StartupInfo)
-		win32event.WaitForSingleObject(hProcess, win32event.INFINITE)
-		exit_code = win32process.GetExitCodeProcess(hProcess)
-		win32file.CloseHandle(hProcess);
-		win32file.CloseHandle(hThread);
-	return exit_code
+    # check for any special operating system commands
+    if cmd == 'del':
+        for arg in args[1:]:
+            win32file.DeleteFile(arg)
+        exit_code = 0
+    else:
+        # otherwise execute the command.
+        hProcess, hThread, dwPid, dwTid = win32process.CreateProcess(None, cmdline, None, None, 1, 0, spawnenv, None, StartupInfo)
+        win32event.WaitForSingleObject(hProcess, win32event.INFINITE)
+        exit_code = win32process.GetExitCodeProcess(hProcess)
+        win32file.CloseHandle(hProcess);
+        win32file.CloseHandle(hThread);
+    return exit_code
 """
+
 
 def disable_module(self):
     self.disabled_modules.append(self.current_module)
+
 
 def use_windows_spawn_fix(self, platform=None):
 
@@ -250,7 +253,7 @@ def use_windows_spawn_fix(self, platform=None):
     # changes, no multiple versions of the same object file will be present.
     self.Replace(ARFLAGS='q')
 
-    def mySubProcess(cmdline, env):
+    def my_subprocess(cmdline, env):
 
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -264,7 +267,7 @@ def use_windows_spawn_fix(self, platform=None):
             print("=====")
         return rv
 
-    def mySpawn(sh, escape, cmd, args, env):
+    def my_spawn(sh, escape, cmd, args, env):
 
         newargs = ' '.join(args[1:])
         cmdline = cmd + " " + newargs
@@ -274,18 +277,18 @@ def use_windows_spawn_fix(self, platform=None):
         if len(cmdline) > 32000 and cmd.endswith("ar"):
             cmdline = cmd + " " + args[1] + " " + args[2] + " "
             for i in range(3, len(args)):
-                rv = mySubProcess(cmdline + args[i], env)
+                rv = my_subprocess(cmdline + args[i], env)
                 if rv:
                     break
         else:
-            rv = mySubProcess(cmdline, env)
+            rv = my_subprocess(cmdline, env)
 
         return rv
 
-    self['SPAWN'] = mySpawn
+    self['SPAWN'] = my_spawn
 
 
-def split_lib(self, libname, src_list = None, env_lib = None):
+def split_lib(self, libname, src_list=None, env_lib=None):
     env = self
 
     num = 0
@@ -297,12 +300,12 @@ def split_lib(self, libname, src_list = None, env_lib = None):
     if src_list is None:
         src_list = getattr(env, libname + "_sources")
 
-    if type(env_lib) == type(None):
+    if isinstance(env_lib, None):
         env_lib = env
 
     for f in src_list:
         fname = ""
-        if type(f) == type(""):
+        if isinstance(f, ""):
             fname = env.File(f).path
         else:
             fname = env.File(f)[0].path
@@ -497,12 +500,14 @@ def detect_visual_c_compiler_version(tools_env):
 
     return vc_chosen_compiler_str
 
+
 def find_visual_c_batch_file(env):
     from SCons.Tool.MSCommon.vc import get_default_version, get_host_target, find_batch_file
 
     version = get_default_version(env)
     (host_platform, target_platform, _) = get_host_target(env)
     return find_batch_file(env, version, host_platform, target_platform)[0]
+
 
 def generate_cpp_hint_file(filename):
     if os.path.isfile(filename):
@@ -515,15 +520,16 @@ def generate_cpp_hint_file(filename):
         except IOError:
             print("Could not write cpp.hint file.")
 
+
 def generate_vs_project(env, num_jobs):
     batch_file = find_visual_c_batch_file(env)
     if batch_file:
         def build_commandline(commands):
             common_build_prefix = ['cmd /V /C set "plat=$(PlatformTarget)"',
-                                    '(if "$(PlatformTarget)"=="x64" (set "plat=x86_amd64"))',
-                                    'set "tools=yes"',
-                                    '(if "$(Configuration)"=="release" (set "tools=no"))',
-                                    'call "' + batch_file + '" !plat!']
+                                   '(if "$(PlatformTarget)"=="x64" (set "plat=x86_amd64"))',
+                                   'set "tools=yes"',
+                                   '(if "$(Configuration)"=="release" (set "tools=no"))',
+                                   'call "' + batch_file + '" !plat!']
 
             result = " ^& ".join(common_build_prefix + [commands])
             return result
@@ -568,30 +574,36 @@ def generate_vs_project(env, num_jobs):
     else:
         print("Could not locate Visual Studio batch file for setting up the build environment. Not generating VS project.")
 
+
 def precious_program(env, program, sources, **args):
     program = env.ProgramOriginal(program, sources, **args)
     env.Precious(program)
     return program
+
 
 def add_shared_library(env, name, sources, **args):
     library = env.SharedLibrary(name, sources, **args)
     env.NoCache(library)
     return library
 
+
 def add_library(env, name, sources, **args):
     library = env.Library(name, sources, **args)
     env.NoCache(library)
     return library
+
 
 def add_program(env, name, sources, **args):
     program = env.Program(name, sources, **args)
     env.NoCache(program)
     return program
 
-def CommandNoCache(env, target, sources, command, **args):
+
+def CommandNoCache(env, target, sources, command, **args):  # noqa: N802
     result = env.Command(target, sources, command, **args)
     env.NoCache(result)
     return result
+
 
 def detect_darwin_sdk_path(platform, env):
     sdk_name = ''
@@ -616,6 +628,7 @@ def detect_darwin_sdk_path(platform, env):
             print("Failed to find SDK path while running xcrun --sdk {} --show-sdk-path.".format(sdk_name))
             raise
 
+
 def get_compiler_version(env):
     # Not using this method on clang because it returns 4.2.1 # https://reviews.llvm.org/D56803
     if using_gcc(env):
@@ -628,8 +641,10 @@ def get_compiler_version(env):
     else:
         return None
 
+
 def using_gcc(env):
     return 'gcc' in os.path.basename(env["CC"])
+
 
 def using_clang(env):
     return 'clang' in os.path.basename(env["CC"])

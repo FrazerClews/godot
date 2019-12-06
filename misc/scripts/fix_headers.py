@@ -49,10 +49,10 @@ while (fname != ""):
     len_fi = len(rep_fi)
     # Pad with spaces to keep alignment
     if (len_fi < len_fl):
-        for x in range(len_fl - len_fi):
+        for _ in range(len_fl - len_fi):
             rep_fi += " "
     elif (len_fl < len_fi):
-        for x in range(len_fi - len_fl):
+        for _ in range(len_fi - len_fl):
             rep_fl += " "
     if (header.find(rep_fl) != -1):
         text = header.replace(rep_fl, rep_fi)
@@ -71,21 +71,21 @@ while (fname != ""):
     line = fileread.readline()
     header_done = False
 
-    while (line.strip() == ""): # Skip empty lines at the top
+    while (line.strip() == ""):  # Skip empty lines at the top
         line = fileread.readline()
 
-    if (line.find("/**********") == -1): # Godot header starts this way
+    if (line.find("/**********") == -1):  # Godot header starts this way
         # Maybe starting with a non-Godot comment, abort header magic
         header_done = True
 
-    while (not header_done): # Handle header now
-        if (line.find("/*") != 0): # No more starting with a comment
+    while (not header_done):  # Handle header now
+        if (line.find("/*") != 0):  # No more starting with a comment
             header_done = True
             if (line.strip() != ""):
                 text += line
         line = fileread.readline()
 
-    while (line != ""): # Dump everything until EOF
+    while (line != ""):  # Dump everything until EOF
         text += line
         line = fileread.readline()
 

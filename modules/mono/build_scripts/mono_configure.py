@@ -187,8 +187,8 @@ def configure(env, env_mono):
         if not mono_root and mono_static:
             mono_root = pkgconfig_try_find_mono_root(mono_lib_names, sharedlib_ext)
             if not mono_root:
-                raise RuntimeError("Building with mono_static=yes, but failed to find the mono prefix with pkg-config; " + \
-                    "specify one manually with the 'mono_prefix' SCons parameter")
+                raise RuntimeError("Building with mono_static=yes, but failed to find the mono prefix with pkg-config; "
+                                   + "specify one manually with the 'mono_prefix' SCons parameter")
 
         if mono_root:
             print('Found Mono root directory: ' + mono_root)
@@ -243,7 +243,7 @@ def configure(env, env_mono):
             if is_apple:
                 env.Append(LIBS=['iconv', 'pthread'])
             elif is_android:
-                pass # Nothing
+                pass  # Nothing
             elif is_javascript:
                 env.Append(LIBS=['m', 'rt', 'dl', 'pthread'])
             else:
@@ -299,14 +299,14 @@ def configure(env, env_mono):
             # Copy the required shared libraries
             copy_mono_shared_libs(env, mono_root, None)
         elif is_javascript:
-            pass # No data directory for this platform
+            pass  # No data directory for this platform
 
     if copy_mono_root:
         if not mono_root:
             mono_root = subprocess.check_output(['pkg-config', 'mono-2', '--variable=prefix']).decode('utf8').strip()
 
         if tools_enabled:
-           copy_mono_root_files(env, mono_root)
+            copy_mono_root_files(env, mono_root)
         else:
             print("Ignoring option: 'copy_mono_root'; only available for builds with 'tools' enabled.")
 
@@ -329,7 +329,7 @@ def make_template_dir(env, mono_root):
     template_mono_root_dir = os.path.join(template_dir, 'Mono')
 
     if os.path.isdir(template_mono_root_dir):
-        rmtree(template_mono_root_dir) # Clean first
+        rmtree(template_mono_root_dir)  # Clean first
 
     # Copy etc/mono/
 
@@ -353,7 +353,7 @@ def copy_mono_root_files(env, mono_root):
     editor_mono_root_dir = os.path.join(output_dir, 'GodotSharp', 'Mono')
 
     if os.path.isdir(editor_mono_root_dir):
-        rmtree(editor_mono_root_dir) # Clean first
+        rmtree(editor_mono_root_dir)  # Clean first
 
     # Copy etc/mono/
 

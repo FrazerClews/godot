@@ -288,10 +288,7 @@ Vector3 BulletPhysicsDirectSpaceState::get_closest_point_to_object_volume(RID p_
 
 	btSphereShape point_shape(0.);
 
-	btCollisionShape *shape;
-	btConvexShape *convex_shape;
-	btTransform child_transform;
-	btTransform body_transform(rigid_object->get_bt_collision_object()->getWorldTransform());
+	btTransform body_transform(rigid_object->get_bt_collision_object()->getWorldTransform()); // TODO reduce?
 
 	btGjkPairDetector::ClosestPointInput input;
 	input.m_transformA.getBasis().setIdentity();
@@ -300,10 +297,10 @@ Vector3 BulletPhysicsDirectSpaceState::get_closest_point_to_object_volume(RID p_
 	bool shapes_found = false;
 
 	for (int i = rigid_object->get_shape_count() - 1; 0 <= i; --i) {
-		shape = rigid_object->get_bt_shape(i);
+		btCollisionShape *shape = rigid_object->get_bt_shape(i);
 		if (shape->isConvex()) {
-			child_transform = rigid_object->get_bt_shape_transform(i);
-			convex_shape = static_cast<btConvexShape *>(shape);
+			btTransform child_transform = rigid_object->get_bt_shape_transform(i);
+			btConvexShape *convex_shape = static_cast<btConvexShape *>(shape);
 
 			input.m_transformB = body_transform * child_transform;
 
@@ -1054,11 +1051,10 @@ int SpaceBullet::test_ray_separation(RigidBodyBullet *p_body, const Transform &p
 	btVector3 recover_motion(0, 0, 0);
 
 	int rays_found = 0;
-	int rays_found_this_round = 0;
 
 	for (int t(RECOVERING_MOVEMENT_CYCLES); 0 < t; --t) {
 		PhysicsServer::SeparationResult *next_results = &r_results[rays_found];
-		rays_found_this_round = recover_from_penetration_ray(p_body, body_transform, RECOVERING_MOVEMENT_SCALE, p_infinite_inertia, p_result_max - rays_found, recover_motion, next_results);
+		int rays_found_this_round = recover_from_penetration_ray(p_body, body_transform, RECOVERING_MOVEMENT_SCALE, p_infinite_inertia, p_result_max - rays_found, recover_motion, next_results);
 
 		rays_found += rays_found_this_round;
 		if (rays_found_this_round == 0) {

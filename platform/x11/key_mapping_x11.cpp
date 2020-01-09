@@ -1006,9 +1006,9 @@ unsigned int KeyMappingX11::get_unicode_from_keysym(KeySym p_keysym) {
 	if ((p_keysym & 0xff000000) == 0x01000000)
 		return p_keysym & 0x00ffffff;
 
-	int middle, low = 0, high = _KEYSYM_MAX - 1;
+	int low = 0, high = _KEYSYM_MAX - 1;
 	do {
-		middle = (high + low) / 2;
+		int middle = (high + low) / 2;
 		if (_xkeysym_to_unicode[middle].keysym == p_keysym)
 			return _xkeysym_to_unicode[middle].unicode;
 		if (_xkeysym_to_unicode[middle].keysym <= p_keysym)
@@ -1794,9 +1794,9 @@ KeySym KeyMappingX11::get_keysym_from_unicode(unsigned int p_unicode) {
 	if (p_unicode >= 0xa0 && p_unicode <= 0xff)
 		return p_unicode;
 
-	int middle, low = 0, high = _UNICODE_MAX - 1;
+	int low = 0, high = _UNICODE_MAX - 1;
 	do {
-		middle = (high + low) / 2;
+		int middle = (high + low) / 2;
 		if (_unicode_to_xkeysym[middle].keysym == p_unicode)
 			return _unicode_to_xkeysym[middle].keysym;
 		if (_unicode_to_xkeysym[middle].keysym <= p_unicode)

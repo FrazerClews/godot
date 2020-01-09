@@ -39,15 +39,13 @@ void cgsem_wait(cgsem_t *);
 void cgsem_destroy(cgsem_t *);
 
 void cgsem_init(cgsem_t *cgsem) {
-	int flags, fd, i;
-
 	pipe(cgsem->pipefd);
 
 	/* Make the pipes FD_CLOEXEC to allow them to close should we call
 	 * execv on restart. */
-	for (i = 0; i < 2; i++) {
-		fd = cgsem->pipefd[i];
-		flags = fcntl(fd, F_GETFD, 0);
+	for (int i = 0; i < 2; i++) {
+		int fd = cgsem->pipefd[i];
+		int flags = fcntl(fd, F_GETFD, 0);
 		flags |= FD_CLOEXEC;
 		fcntl(fd, F_SETFD, flags);
 	}

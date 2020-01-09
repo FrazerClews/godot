@@ -208,7 +208,6 @@ struct	GJK
 			do	{
 				const U		next=1-m_current;
 				sSimplex&	cs=m_simplices[m_current];
-				sSimplex&	ns=m_simplices[next];
 				/* Check zero							*/
 				const real_t	rl=m_ray.length();
 				if(rl<GJK_MIN_DISTANCE)
@@ -262,6 +261,7 @@ struct	GJK
 				}
 				if(sqdist>=0)
 				{/* Valid	*/
+					sSimplex&	ns=m_simplices[next];
 					ns.rank		=	0;
 					m_ray		=	Vector3(0,0,0);
 					m_current	=	next;
@@ -632,12 +632,12 @@ struct	GJK
 							{
 								sHorizon		horizon;
 								sSV*			w=&m_sv_store[m_nextsv++];
-								bool			valid=true;
 								best->pass	=	(U1)(++pass);
 								gjk.getsupport(best->n,*w);
 								const real_t	wdist=vec3_dot(best->n,w->w)-best->d;
 								if(wdist>EPA_ACCURACY)
 								{
+									bool valid=true;
 									for(U j=0;(j<3)&&valid;++j)
 									{
 										valid&=expand(	pass,w,

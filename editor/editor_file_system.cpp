@@ -208,12 +208,12 @@ void EditorFileSystem::_scan_filesystem() {
 	String fscache = EditorSettings::get_singleton()->get_project_settings_dir().plus_file(CACHE_FILE_NAME);
 	FileAccess *f = FileAccess::open(fscache, FileAccess::READ);
 
-	bool first = true;
 	if (f) {
 		//read the disk cache
 		while (!f->eof_reached()) {
 
 			String l = f->get_line().strip_edges();
+			bool first = true; // TODO make preprocessor
 			if (first) {
 				if (first_scan) {
 					// only use this on first scan, afterwards it gets ignored

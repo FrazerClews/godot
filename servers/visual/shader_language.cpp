@@ -3919,10 +3919,9 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const Map<StringName, Bui
 						var.array_size = decl.size;
 					}
 
-					bool full_def = false;
-
 					tk = _get_token();
 					if (tk.type == TK_OP_ASSIGN) {
+						bool full_def = false;
 						tk = _get_token();
 
 						if (tk.type != TK_CURLY_BRACKET_OPEN) {

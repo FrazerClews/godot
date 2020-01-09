@@ -84,15 +84,11 @@ void SoftBodyBullet::update_visual_server(SoftBodyVisualServerHandler *p_visual_
 	const btSoftBody::tNodeArray &nodes(bt_soft_body->m_nodes);
 	const int nodes_count = nodes.size();
 
-	const Vector<int> *vs_indices;
-	const void *vertex_position;
-	const void *vertex_normal;
-
 	for (int vertex_index = 0; vertex_index < nodes_count; ++vertex_index) {
-		vertex_position = reinterpret_cast<const void *>(&nodes[vertex_index].m_x);
-		vertex_normal = reinterpret_cast<const void *>(&nodes[vertex_index].m_n);
+		const void *vertex_position = reinterpret_cast<const void *>(&nodes[vertex_index].m_x);
+		const void *vertex_normal = reinterpret_cast<const void *>(&nodes[vertex_index].m_n);
 
-		vs_indices = &indices_table[vertex_index];
+		const Vector<int> *vs_indices = &indices_table[vertex_index];
 
 		const int vs_indices_size(vs_indices->size());
 		for (int x = 0; x < vs_indices_size; ++x) {

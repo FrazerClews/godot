@@ -1222,8 +1222,6 @@ void TileSetEditor::_on_workspace_input(const Ref<InputEvent> &p_ie) {
 		return;
 
 	static bool dragging;
-	static bool erasing;
-	static bool alternative;
 	draw_edited_region = false;
 
 	Rect2 current_tile_region = Rect2();
@@ -1401,6 +1399,8 @@ void TileSetEditor::_on_workspace_input(const Ref<InputEvent> &p_ie) {
 					}
 				} break;
 				case EDITMODE_BITMASK: {
+					static bool erasing;
+					static bool alternative;
 					if (mb.is_valid()) {
 						if (mb->is_pressed()) {
 							if (dragging) {

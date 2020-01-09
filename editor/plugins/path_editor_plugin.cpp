@@ -316,20 +316,19 @@ bool PathEditorPlugin::forward_spatial_gui_input(Camera *p_camera, const Ref<Inp
 		if (mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT && (curve_create->is_pressed() || (curve_edit->is_pressed() && mb->get_control()))) {
 			//click into curve, break it down
 			PoolVector<Vector3> v3a = c->tessellate();
-			int idx = 0;
 			int rc = v3a.size();
 			int closest_seg = -1;
 			Vector3 closest_seg_point;
-			float closest_d = 1e20;
 
 			if (rc >= 2) {
 				PoolVector<Vector3>::Read r = v3a.read();
 
 				if (p_camera->unproject_position(gt.xform(c->get_point_position(0))).distance_to(mbpos) < click_dist)
 					return false; //nope, existing
-
+				float closest_d = 1e20;
 				for (int i = 0; i < c->get_point_count() - 1; i++) {
 					//find the offset and point index of the place to break up
+					int idx = 0; // TODO move up?
 					int j = idx;
 					if (p_camera->unproject_position(gt.xform(c->get_point_position(i + 1))).distance_to(mbpos) < click_dist)
 						return false; //nope, existing

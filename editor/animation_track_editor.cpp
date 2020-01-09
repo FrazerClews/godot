@@ -1579,7 +1579,6 @@ void AnimationTimelineEdit::_notification(int p_what) {
 		Color color_time_dec = color;
 		color_time_dec.a *= 0.5;
 #define SC_ADJ 100
-		int min = 30;
 		int dec = 1;
 		int step = 1;
 		int decimals = 2;
@@ -1596,7 +1595,7 @@ void AnimationTimelineEdit::_notification(int p_what) {
 
 		while (!step_found) {
 
-			min = max_sc_width;
+			int min = max_sc_width;
 			if (decimals > 0)
 				min += period_width + max_digit_width * decimals;
 

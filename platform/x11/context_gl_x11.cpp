@@ -92,29 +92,6 @@ Error ContextGL_X11::initialize() {
 
 	ERR_FAIL_COND_V(!glXCreateContextAttribsARB, ERR_UNCONFIGURED);
 
-	static int visual_attribs[] = {
-		GLX_RENDER_TYPE, GLX_RGBA_BIT,
-		GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
-		GLX_DOUBLEBUFFER, true,
-		GLX_RED_SIZE, 1,
-		GLX_GREEN_SIZE, 1,
-		GLX_BLUE_SIZE, 1,
-		GLX_DEPTH_SIZE, 24,
-		None
-	};
-
-	static int visual_attribs_layered[] = {
-		GLX_RENDER_TYPE, GLX_RGBA_BIT,
-		GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
-		GLX_DOUBLEBUFFER, true,
-		GLX_RED_SIZE, 8,
-		GLX_GREEN_SIZE, 8,
-		GLX_BLUE_SIZE, 8,
-		GLX_ALPHA_SIZE, 8,
-		GLX_DEPTH_SIZE, 24,
-		None
-	};
-
 	int fbcount;
 	GLXFBConfig fbconfig = 0;
 	XVisualInfo *vi = NULL;
@@ -125,6 +102,17 @@ Error ContextGL_X11::initialize() {
 	unsigned long valuemask = CWBorderPixel | CWColormap | CWEventMask;
 
 	if (OS::get_singleton()->is_layered_allowed()) {
+		static int visual_attribs_layered[] = {
+			GLX_RENDER_TYPE, GLX_RGBA_BIT,
+			GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+			GLX_DOUBLEBUFFER, true,
+			GLX_RED_SIZE, 8,
+			GLX_GREEN_SIZE, 8,
+			GLX_BLUE_SIZE, 8,
+			GLX_ALPHA_SIZE, 8,
+			GLX_DEPTH_SIZE, 24,
+			None
+		};
 		GLXFBConfig *fbc = glXChooseFBConfig(x11_display, DefaultScreen(x11_display), visual_attribs_layered, &fbcount);
 		ERR_FAIL_COND_V(!fbc, ERR_UNCONFIGURED);
 
@@ -154,6 +142,16 @@ Error ContextGL_X11::initialize() {
 		valuemask |= CWBackPixel;
 
 	} else {
+		static int visual_attribs[] = {
+			GLX_RENDER_TYPE, GLX_RGBA_BIT,
+			GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+			GLX_DOUBLEBUFFER, true,
+			GLX_RED_SIZE, 1,
+			GLX_GREEN_SIZE, 1,
+			GLX_BLUE_SIZE, 1,
+			GLX_DEPTH_SIZE, 24,
+			None
+		};
 		GLXFBConfig *fbc = glXChooseFBConfig(x11_display, DefaultScreen(x11_display), visual_attribs, &fbcount);
 		ERR_FAIL_COND_V(!fbc, ERR_UNCONFIGURED);
 

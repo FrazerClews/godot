@@ -2731,7 +2731,7 @@ static String _get_clipboard_impl(Atom p_source, Window x11_window, ::Display *x
 
 	Atom type;
 	Atom selection = XA_PRIMARY;
-	int format, result;
+	int format; //TODO reduce?
 	unsigned long len, bytes_left, dummy;
 	unsigned char *data;
 	Window Sown = XGetSelectionOwner(x11_display, p_source);
@@ -2767,7 +2767,7 @@ static String _get_clipboard_impl(Atom p_source, Window x11_window, ::Display *x
 				&data);
 		// DATA is There
 		if (bytes_left > 0) {
-			result = XGetWindowProperty(x11_display, x11_window,
+			int result = XGetWindowProperty(x11_display, x11_window,
 					selection, 0, bytes_left, 0,
 					AnyPropertyType, &type, &format,
 					&len, &dummy, &data);

@@ -45,13 +45,11 @@ Error ImageLoaderTGA::decode_tga_rle(const uint8_t *p_compressed_buffer, size_t 
 
 	size_t compressed_pos = 0;
 	size_t output_pos = 0;
-	size_t c = 0;
-	size_t count = 0;
 
 	while (output_pos < p_output_size) {
-		c = p_compressed_buffer[compressed_pos];
+		size_t c = p_compressed_buffer[compressed_pos];
+		size_t count = (c & 0x7f) + 1;
 		compressed_pos += 1;
-		count = (c & 0x7f) + 1;
 
 		if (c & 0x80) {
 			for (size_t i = 0; i < p_pixel_size; i++) {

@@ -69,8 +69,7 @@ bool FabrikInverseKinematic::build_chain(Task *p_task, bool p_force_simple_chain
 
 	// Holds all IDs that are composing a single chain in reverse order
 	Vector<BoneId> chain_ids;
-	// This is used to know the chain size
-	int sub_chain_size;
+
 	// Resize only one time in order to fit all joints for performance reason
 	chain_ids.resize(p_task->skeleton->get_bone_count());
 
@@ -80,7 +79,8 @@ bool FabrikInverseKinematic::build_chain(Task *p_task, bool p_force_simple_chain
 		ERR_FAIL_COND_V(p_task->root_bone >= ee->tip_bone, false);
 		ERR_FAIL_INDEX_V(ee->tip_bone, p_task->skeleton->get_bone_count(), false);
 
-		sub_chain_size = 0;
+		// This is used to know the chain size
+		int sub_chain_size = 0;
 		// Picks all IDs that composing a single chain in reverse order (except the root)
 		BoneId chain_sub_tip(ee->tip_bone);
 		while (chain_sub_tip > p_task->root_bone) {

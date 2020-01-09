@@ -445,12 +445,12 @@ GDScriptParser::Node *GDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			}
 
 			String path;
-			bool found_constant = false;
 			bool valid = false;
 			ConstantNode *cn;
 
 			Node *subexpr = _parse_and_reduce_expression(p_parent, p_static);
 			if (subexpr) {
+				bool found_constant = false;
 				if (subexpr->type == Node::TYPE_CONSTANT) {
 					cn = static_cast<ConstantNode *>(subexpr);
 					found_constant = true;
@@ -5531,7 +5531,6 @@ bool GDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	tokenizer->advance();
 	r_type.has_type = true;
 
-	bool finished = false;
 	bool can_index = false;
 	String full_name;
 
@@ -5596,6 +5595,7 @@ bool GDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	}
 
 	if (can_index) {
+		bool finished = false;
 		while (!finished) {
 			switch (tokenizer->get_token()) {
 				case GDScriptTokenizer::TK_PERIOD: {
@@ -6312,8 +6312,8 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 			cn->cast_type = _resolve_type(cn->cast_type, cn->line);
 			if (source_type.has_type) {
 
-				bool valid = false;
 				if (check_types) {
+					bool valid = false;
 					if (cn->cast_type.kind == DataType::BUILTIN && source_type.kind == DataType::BUILTIN) {
 						valid = Variant::can_convert(source_type.builtin_type, cn->cast_type.builtin_type);
 					}

@@ -120,7 +120,6 @@ void JoypadLinux::enumerate_joypads(udev *p_udev) {
 
 	udev_enumerate *enumerate;
 	udev_list_entry *devices, *dev_list_entry;
-	udev_device *dev;
 
 	enumerate = udev_enumerate_new(p_udev);
 	udev_enumerate_add_match_subsystem(enumerate, "input");
@@ -130,7 +129,7 @@ void JoypadLinux::enumerate_joypads(udev *p_udev) {
 	udev_list_entry_foreach(dev_list_entry, devices) {
 
 		const char *path = udev_list_entry_get_name(dev_list_entry);
-		dev = udev_device_new_from_syspath(p_udev, path);
+		udev_device *dev = udev_device_new_from_syspath(p_udev, path);
 		const char *devnode = udev_device_get_devnode(dev);
 
 		if (devnode) {

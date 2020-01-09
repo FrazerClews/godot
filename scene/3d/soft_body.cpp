@@ -195,9 +195,8 @@ bool SoftBody::_set_property_pinned_points_indices(const Array &p_indices) {
 	pinned_points.resize(p_indices_size);
 
 	PoolVector<PinnedPoint>::Write w = pinned_points.write();
-	int point_index;
 	for (int i = 0; i < p_indices_size; ++i) {
-		point_index = p_indices.get(i);
+		int point_index = p_indices.get(i);
 		if (w[i].point_index != point_index) {
 			if (-1 != w[i].point_index)
 				pin_point(w[i].point_index, false);

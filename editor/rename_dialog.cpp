@@ -540,10 +540,9 @@ String RenameDialog::_postprocess(const String &subject) {
 		// _ name would become empty. Ignore
 		if (matches.size() && result != "_") {
 			String buffer;
-			int start = 0;
-			int end = 0;
+			int end; // TODO check if good?
 			for (int i = 0; i < matches.size(); ++i) {
-				start = ((Ref<RegExMatch>)matches[i])->get_start(1);
+				int start = ((Ref<RegExMatch>)matches[i])->get_start(1);
 				buffer += result.substr(end, start - end - 1);
 				buffer += result.substr(start, 1).to_upper();
 				end = start + 1;

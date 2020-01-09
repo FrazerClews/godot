@@ -355,8 +355,6 @@ static void interpolate_colors(const int p_colorp[4], const int p_colorq[4], con
 	int u, v, uscale;
 	int k;
 
-	int tmp1, tmp2;
-
 	int P[4], Q[4], R[4], S[4];
 
 	for (k = 0; k < 4; k++) {
@@ -384,8 +382,8 @@ static void interpolate_colors(const int p_colorp[4], const int p_colorq[4], con
 	}
 
 	for (k = 0; k < 4; k++) {
-		tmp1 = P[k] * uscale + u * (Q[k] - P[k]);
-		tmp2 = R[k] * uscale + u * (S[k] - R[k]);
+		int tmp1 = P[k] * uscale + u * (Q[k] - P[k]);
+		int tmp2 = R[k] * uscale + u * (S[k] - R[k]);
 
 		tmp1 = tmp1 * 4 + v * (tmp2 - tmp1);
 

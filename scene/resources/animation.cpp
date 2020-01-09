@@ -2421,7 +2421,6 @@ float Animation::bezier_track_interpolate(int p_track, float p_time) const {
 	float duration = bt->values[idx + 1].time - bt->values[idx].time; // time duration between our two keyframes
 	float low = 0; // 0% of the current animation segment
 	float high = 1; // 100% of the current animation segment
-	float middle;
 
 	Vector2 start(0, bt->values[idx].value.value);
 	Vector2 start_out = start + bt->values[idx].value.out_handle;
@@ -2431,7 +2430,7 @@ float Animation::bezier_track_interpolate(int p_track, float p_time) const {
 	//narrow high and low as much as possible
 	for (int i = 0; i < iterations; i++) {
 
-		middle = (low + high) / 2;
+		float middle = (low + high) / 2;
 
 		Vector2 interp = _bezier_interp(middle, start, start_out, end_in, end);
 

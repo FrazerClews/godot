@@ -118,19 +118,18 @@ static String dump_node_code(SL::Node *p_node, int p_level) {
 					ucode += " = " + get_constant_text(E->get().type, E->get().default_value);
 				}
 
-				static const char *hint_name[SL::ShaderNode::Uniform::HINT_MAX] = {
-					"",
-					"color",
-					"range",
-					"albedo",
-					"normal",
-					"black",
-					"white"
-				};
-
-				if (E->get().hint)
+				if (E->get().hint) {
+					static const char *hint_name[SL::ShaderNode::Uniform::HINT_MAX] = {
+						"",
+						"color",
+						"range",
+						"albedo",
+						"normal",
+						"black",
+						"white"
+					};
 					ucode += " : " + String(hint_name[E->get().hint]);
-
+				}
 				code += ucode + "\n";
 			}
 

@@ -92,16 +92,16 @@ void ColorPicker::set_focus_on_line_edit() {
 }
 
 void ColorPicker::_update_controls() {
-
-	const char *rgb[3] = { "R", "G", "B" };
-	const char *hsv[3] = { "H", "S", "V" };
-
 	if (hsv_mode_enabled) {
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++) {
+			const char *hsv[3] = { "H", "S", "V" };
 			labels[i]->set_text(hsv[i]);
+		}
 	} else {
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++) {
+			const char *rgb[3] = { "R", "G", "B" };
 			labels[i]->set_text(rgb[i]);
+		}
 	}
 
 	if (hsv_mode_enabled) {

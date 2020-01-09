@@ -503,14 +503,13 @@ Size2 Font::get_wordwrap_string_size(const String &p_string, float p_width) cons
 	if (l == 0)
 		return Size2(p_width, get_height());
 
-	float line_w = 0;
 	float h = 0;
 	float space_w = get_char_size(' ').width;
 	Vector<String> lines = p_string.split("\n");
 	for (int i = 0; i < lines.size(); i++) {
+		float line_w = 0;
 		h += get_height();
 		String t = lines[i];
-		line_w = 0;
 		Vector<String> words = t.split(" ");
 		for (int j = 0; j < words.size(); j++) {
 			line_w += get_string_size(words[j]).x;

@@ -1868,10 +1868,11 @@ void SpatialEditorViewport::_nav_pan(Ref<InputEventWithModifiers> p_event, const
 
 	const NavigationScheme nav_scheme = (NavigationScheme)EditorSettings::get_singleton()->get("editors/3d/navigation/navigation_scheme").operator int();
 
-	real_t pan_speed = 1 / 150.0;
-	int pan_speed_modifier = 10;
-	if (nav_scheme == NAVIGATION_MAYA && p_event->get_shift())
+	if (nav_scheme == NAVIGATION_MAYA && p_event->get_shift()) {
+		real_t pan_speed = 1 / 150.0; // TODO move calc down?
+		int pan_speed_modifier = 10;
 		pan_speed *= pan_speed_modifier;
+	}
 
 	Transform camera_transform;
 
@@ -1888,10 +1889,11 @@ void SpatialEditorViewport::_nav_zoom(Ref<InputEventWithModifiers> p_event, cons
 
 	const NavigationScheme nav_scheme = (NavigationScheme)EditorSettings::get_singleton()->get("editors/3d/navigation/navigation_scheme").operator int();
 
-	real_t zoom_speed = 1 / 80.0;
-	int zoom_speed_modifier = 10;
-	if (nav_scheme == NAVIGATION_MAYA && p_event->get_shift())
+	if (nav_scheme == NAVIGATION_MAYA && p_event->get_shift()) {
+		real_t zoom_speed = 1 / 80.0; // TODO move calc down?
+		int zoom_speed_modifier = 10;
 		zoom_speed *= zoom_speed_modifier;
+	}
 
 	NavigationZoomStyle zoom_style = (NavigationZoomStyle)EditorSettings::get_singleton()->get("editors/3d/navigation/zoom_style").operator int();
 	if (zoom_style == NAVIGATION_ZOOM_HORIZONTAL) {
@@ -5277,10 +5279,9 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 	// The maximum height an object can travel to be snapped
 	const float max_snap_height = 20.0;
 
-	// Will be set to `true` if at least one node from the selection was successfully snapped
-	bool snapped_to_floor = false;
-
 	if (keys.size()) {
+		// Will be set to `true` if at least one node from the selection was successfully snapped
+		bool snapped_to_floor = false;
 		// For snapping to be performed, there must be solid geometry under at least one of the selected nodes.
 		// We need to check this before snapping to register the undo/redo action only if needed.
 		for (int i = 0; i < keys.size(); i++) {

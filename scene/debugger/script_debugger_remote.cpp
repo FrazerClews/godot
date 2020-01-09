@@ -153,10 +153,8 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 	if (mouse_mode != Input::MOUSE_MODE_VISIBLE)
 		Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 
-	uint64_t loop_begin_usec = 0;
-	uint64_t loop_time_sec = 0;
 	while (true) {
-		loop_begin_usec = OS::get_singleton()->get_ticks_usec();
+		uint64_t loop_begin_usec = OS::get_singleton()->get_ticks_usec();
 
 		_get_output();
 
@@ -358,7 +356,7 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue, 
 		}
 
 		// This is for the camera override to stay live even when the game is paused from the editor
-		loop_time_sec = (OS::get_singleton()->get_ticks_usec() - loop_begin_usec) / 1000000.0f;
+		uint64_t loop_time_sec = (OS::get_singleton()->get_ticks_usec() - loop_begin_usec) / 1000000.0f;
 		VisualServer::get_singleton()->sync();
 		if (VisualServer::get_singleton()->has_changed()) {
 			VisualServer::get_singleton()->draw(true, loop_time_sec * Engine::get_singleton()->get_time_scale());

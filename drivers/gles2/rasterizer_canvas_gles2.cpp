@@ -113,7 +113,6 @@ void RasterizerCanvasGLES2::canvas_begin() {
 
 	state.canvas_shader.bind();
 	state.using_transparent_rt = false;
-	int viewport_x, viewport_y, viewport_width, viewport_height;
 
 	if (storage->frame.current_rt) {
 		glBindFramebuffer(GL_FRAMEBUFFER, storage->frame.current_rt->fbo);
@@ -121,10 +120,10 @@ void RasterizerCanvasGLES2::canvas_begin() {
 
 		if (storage->frame.current_rt->flags[RasterizerStorage::RENDER_TARGET_DIRECT_TO_SCREEN]) {
 			// set Viewport and Scissor when rendering directly to screen
-			viewport_width = storage->frame.current_rt->width;
-			viewport_height = storage->frame.current_rt->height;
-			viewport_x = storage->frame.current_rt->x;
-			viewport_y = OS::get_singleton()->get_window_size().height - viewport_height - storage->frame.current_rt->y;
+			int viewport_width = storage->frame.current_rt->width;
+			int viewport_height = storage->frame.current_rt->height;
+			int viewport_x = storage->frame.current_rt->x;
+			int viewport_y = OS::get_singleton()->get_window_size().height - viewport_height - storage->frame.current_rt->y;
 			glScissor(viewport_x, viewport_y, viewport_width, viewport_height);
 			glViewport(viewport_x, viewport_y, viewport_width, viewport_height);
 			glEnable(GL_SCISSOR_TEST);

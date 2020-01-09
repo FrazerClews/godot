@@ -2165,10 +2165,9 @@ void TextEdit::_get_minimap_mouse_row(const Point2i &p_mouse, int &r_row) const 
 	}
 
 	int row = minimap_line + Math::floor(rows);
-	int wrap_index = 0;
 
 	if (is_wrap_enabled() || is_hiding_enabled()) {
-
+		int wrap_index = 0;
 		int f_ofs = num_lines_from_rows(minimap_line, cursor.wrap_ofs, rows + (1 * SGN(rows)), wrap_index) - 1;
 		if (rows < 0) {
 			row = minimap_line - f_ofs;

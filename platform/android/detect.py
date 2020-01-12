@@ -259,7 +259,7 @@ def configure(env):
     # Link flags
 
     ndk_version = get_ndk_version(env["ANDROID_NDK_ROOT"])
-    if ndk_version != None and LooseVersion(ndk_version) >= LooseVersion("17.1.4828580"):
+    if ndk_version is not None and LooseVersion(ndk_version) >= LooseVersion("17.1.4828580"):
         env.Append(LINKFLAGS=['-Wl,--exclude-libs,libgcc.a', '-Wl,--exclude-libs,libatomic.a', '-nostdlib++'])
     else:
         env.Append(LINKFLAGS=[env["ANDROID_NDK_ROOT"] + "/sources/cxx-stl/llvm-libc++/libs/" + arch_subpath + "/libandroid_support.a"])

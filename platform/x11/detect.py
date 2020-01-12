@@ -182,13 +182,13 @@ def configure(env):
     # Check for gcc version >= 6 before adding -no-pie
     if using_gcc(env):
         version = get_compiler_version(env)
-        if version != None and version[0] >= '6':
+        if version is not None and version[0] >= '6':
             env.Append(CCFLAGS=['-fpie'])
             env.Append(LINKFLAGS=['-no-pie'])
     # Do the same for clang should be fine with Clang 4 and higher
     if using_clang(env):
         version = get_compiler_version(env)
-        if version != None and version[0] >= '4':
+        if version is not None and version[0] >= '4':
             env.Append(CCFLAGS=['-fpie'])
             env.Append(LINKFLAGS=['-no-pie'])
 

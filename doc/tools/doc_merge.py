@@ -57,11 +57,11 @@ def get_tag(node, name):
 def find_method_descr(old_class, name):
 
     methods = old_class.find("methods")
-    if(methods != None and len(list(methods)) > 0):
+    if(methods is not None and len(list(methods)) > 0):
         for m in list(methods):
             if (m.attrib["name"] == name):
                 description = m.find("description")
-                if (description != None and description.text.strip() != ""):
+                if (description is not None and description.text.strip() != ""):
                     return description.text
 
     return None
@@ -70,11 +70,11 @@ def find_method_descr(old_class, name):
 def find_signal_descr(old_class, name):
 
     signals = old_class.find("signals")
-    if(signals != None and len(list(signals)) > 0):
+    if(signals is not None and len(list(signals)) > 0):
         for m in list(signals):
             if (m.attrib["name"] == name):
                 description = m.find("description")
-                if (description != None and description.text.strip() != ""):
+                if (description is not None and description.text.strip() != ""):
                     return description.text
 
     return None
@@ -85,7 +85,7 @@ def find_constant_descr(old_class, name):
     if (old_class is None):
         return None
     constants = old_class.find("constants")
-    if(constants != None and len(list(constants)) > 0):
+    if(constants is not None and len(list(constants)) > 0):
         for m in list(constants):
             if (m.attrib["name"] == name):
                 if (m.text.strip() != ""):
@@ -108,23 +108,23 @@ def write_class(c):
 
     write_string(f, "<brief_description>")
 
-    if (old_class != None):
+    if (old_class is not None):
         old_brief_descr = old_class.find("brief_description")
-        if (old_brief_descr != None):
+        if (old_brief_descr is not None):
             write_string(f, escape(old_brief_descr.text.strip()))
 
     write_string(f, "</brief_description>")
 
     write_string(f, "<description>")
-    if (old_class != None):
+    if (old_class is not None):
         old_descr = old_class.find("description")
-        if (old_descr != None):
+        if (old_descr is not None):
             write_string(f, escape(old_descr.text.strip()))
 
     write_string(f, "</description>")
 
     methods = c.find("methods")
-    if(methods != None and len(list(methods)) > 0):
+    if(methods is not None and len(list(methods)) > 0):
 
         write_string(f, "<methods>")
         inc_tab()
@@ -148,7 +148,7 @@ def write_class(c):
                     write_string(f, '</argument>')
 
             write_string(f, '<description>')
-            if (old_class != None):
+            if (old_class is not None):
                 old_method_descr = find_method_descr(old_class, m.attrib["name"])
                 if (old_method_descr):
                     write_string(f, escape(escape(old_method_descr.strip())))
@@ -160,7 +160,7 @@ def write_class(c):
         write_string(f, "</methods>")
 
     signals = c.find("signals")
-    if(signals != None and len(list(signals)) > 0):
+    if(signals is not None and len(list(signals)) > 0):
 
         write_string(f, "<signals>")
         inc_tab()
@@ -177,7 +177,7 @@ def write_class(c):
                     write_string(f, '</argument>')
 
             write_string(f, '<description>')
-            if (old_class != None):
+            if (old_class is not None):
                 old_signal_descr = find_signal_descr(old_class, m.attrib["name"])
                 if (old_signal_descr):
                     write_string(f, escape(old_signal_descr.strip()))
@@ -188,7 +188,7 @@ def write_class(c):
         write_string(f, "</signals>")
 
     constants = c.find("constants")
-    if(constants != None and len(list(constants)) > 0):
+    if(constants is not None and len(list(constants)) > 0):
 
         write_string(f, "<constants>")
         inc_tab()
